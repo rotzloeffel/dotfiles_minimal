@@ -1,0 +1,75 @@
+#--| $HOME/.inputrc |--#
+
+# ctrl-x ctrl-r to reload .inputrc
+
+# load systemwide inputrc
+$include /etc/inputrc
+
+# allow UTF-8 input and output, instead of showing stuff like $'\0123\0456'
+set meta-flag       on
+set input-meta      on
+set output-meta     on
+set convert-meta    off
+
+# completion options
+TAB: menu-complete                      # cycle through possible completions
+set menu-complete-display-prefix on     # complete until the end of common prefix before cycling through possible completions
+set page-completions             on
+set completion-ignore-case       on
+set completion-query-items       200
+set show-all-if-ambiguous        on
+set show-all-if-unmodified       on
+set visible-stats                on
+set colored-stats                on      # Colored completion based on filetype
+set colored-completion-prefix    on
+set mark-symlinked-directories   on      # Immediately add a trailing slash when autocompleting symlinks to directories
+set enable-bracketed-paste       on      # A bit of security protection for pasted text
+set blink-matching-paren         on      # Blink matching parentheses
+set editing-mode                 vi
+set skip-completed-text          on      # When completing in middle of word, don't dupe matching text after word
+set echo-control-characters      off
+
+#--| keyboard mappings |--#
+
+$if mode=emacs
+    # Readline specific functions
+    "\e[1~": beginning-of-line           # CTRL + A
+    "\e[4~": end-of-line                 # CTRL + E
+    "\e[5C": forward-word                # Control + Right
+    "\e[5D": backward-word               # Control + Left
+    "\e[3~": delete-char                 # Delete
+    "\e[2~": quoted-insert               # CTRL + v
+    "\e[5~": history-search-backward     # Page Up
+    "\e[6~": history-search-forward      # Page Down
+    #"\t": menu-complete                 # Tab cycles through completions
+    # If the above prevents Left and Right from working, try this:
+    #"\e[C": forward-char                # Move forward one character.
+    #"\e[D": backward-char               # Move backwards one character.
+$endif
+
+# avoid binding ^J, ^M,  ^C, ^?, ^S, ^Q, etc.
+$if mode=vi
+    $if term=linux
+        set show-mode-in-prompt     on
+        set vi-ins-mode-string  \1\e[?0c\2
+        set vi-cmd-mode-string  \1\e[?8c\2
+    $endif
+    set keymap vi-command
+    "gg": beginning-of-history
+    "G": end-of-history
+    "k": history-search-backward
+    "j": history-search-forward
+    "?": reverse-search-history
+    "/": forward-search-history
+
+    set keymap vi-insert
+    "\C-l": clear-screen
+    "\C-w": backward-kill-word
+    "\C-a": beginning-of-line
+    "\C-e": end-of-line
+    "\e.":  yank-last-arg
+$endif
+
+$if Bash
+    Space: magic-space
+$endif
