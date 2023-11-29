@@ -19,14 +19,14 @@ export GPG_TTY="$(tty)"
 
 #--| xdg |--#
 
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_DATA_HOME="${HOME}/.local/share"
 export XDG_DOCUMENTS_DIR="${HOME}/documents"
 export XDG_DOWNLOAD_DIR="${HOME}/downloads"
 export XDG_MUSIC_DIR="${HOME}/music"
 export XDG_PICTURES_DIR="${HOME}/pictures"
-export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_STATE_HOME="${HOME}/.local/state"
 export XDG_VIDEOS_DIR="${HOME}/videos"
 
 #--| less |--#

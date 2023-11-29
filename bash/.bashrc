@@ -42,8 +42,8 @@ if [ -f $HOME/bash_functions ]; then
 fi
 
 # load fzfrc
-if [ -f "$HOME}/.fzfrc" ]; then
-    source "${HOME}.fzfrc"
+if [ -f "$HOME/.fzfrc" ]; then
+    source "$HOME/.fzfrc"
 fi
 
 # load fzf keybindings

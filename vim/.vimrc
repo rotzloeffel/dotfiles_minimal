@@ -379,14 +379,6 @@ nnoremap <silent><expr> <Leader>hl (&hls && v:hlsearch ? ':nohls' : ':set hls').
 nnoremap <expr> oo 'm`' . v:count1 . 'o<Esc>``'
 nnoremap <expr> OO 'm`' . v:count1 . 'O<Esc>``'
 
-" nnoremap oo @='m`o<c-v><Esc>``'<cr>
-" nnoremap OO @='m`O<c-v><Esc>``'<cr>
-
-" the following two mappings work, but if you change double quote to single, it
-" will not work
-" nnoremap oo @="m`o\<lt>Esc>``"<cr>
-" nnoremap oo @="m`o\e``"<cr>
-
 " Insert a space after current character
 nnoremap <silent> <Space><Space> a<Space><ESC>h
 

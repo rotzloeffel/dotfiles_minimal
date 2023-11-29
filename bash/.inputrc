@@ -41,10 +41,6 @@ $if mode=emacs
     "\e[2~": quoted-insert               # CTRL + v
     "\e[5~": history-search-backward     # Page Up
     "\e[6~": history-search-forward      # Page Down
-    #"\t": menu-complete                 # Tab cycles through completions
-    # If the above prevents Left and Right from working, try this:
-    #"\e[C": forward-char                # Move forward one character.
-    #"\e[D": backward-char               # Move backwards one character.
 $endif
 
 # avoid binding ^J, ^M,  ^C, ^?, ^S, ^Q, etc.
