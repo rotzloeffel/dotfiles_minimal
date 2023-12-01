@@ -130,33 +130,18 @@ EXA_DIR_PREVIEW="exa \
   --icons \
 "
 
-if [[ "$TTY" != /dev/tty*[0-9]* ]]; then
-    command -v exa > /dev/null   && \
-        alias exa='exa --classify --icons --color=always --group-directories-first' && \
-        alias l='ls'             && \
-        alias ls='exa  -g'       && \
-        alias la='exa  -ag'      && \
-        alias ll='exa  -lg'      && \
-        alias lla='exa -alg'     && \
-        alias l.='exa  -d .*'    && \
-        alias lsd='exa -Dalg'    && \
-        alias ltr='exa -alg -s modified'    && \
-        alias lt='exa  -aTg'
-        export FZF_ALT_C_OPTS="--preview=\"$EXA_DIR_PREVIEW {}\""
-    else
-    command -v exa > /dev/null   && \
-        alias exa='exa --classify --color=always --group-directories-first' && \
-        alias l='ls'             && \
-        alias ls='exa  -g'       && \
-        alias la='exa  -ag'      && \
-        alias ll='exa  -lg'      && \
-        alias lla='exa -alg'     && \
-        alias l.='exa  -d .*'    && \
-        alias lsd='exa -Dalg'    && \
-        alias ltr='exa -alg -s modified'    && \
-        alias lt='exa -Td -L 2'
-        export FZF_ALT_C_OPTS="--preview=\"$EXA_DIR_PREVIEW {}\""
-fi
+command -v exa > /dev/null   && \
+  alias exa='exa --classify --color=always --group-directories-first' && \
+  alias l='ls'             && \
+  alias ls='exa  -g'       && \
+  alias la='exa  -ag'      && \
+  alias ll='exa  -lg'      && \
+  alias lla='exa -alg'     && \
+  alias l.='exa  -d .*'    && \
+  alias lsd='exa -Dalg'    && \
+  alias ltr='exa -alg -s modified'    && \
+  alias lt='exa  -aTg'
+  export FZF_ALT_C_OPTS="--preview=\"$EXA_DIR_PREVIEW {}\""
 
 #--| editor |--#
 if [[ "$(command -v nvim)" ]]; then
@@ -183,12 +168,12 @@ fi
 command -v bat > /dev/null && \
     alias cat="bat -p" && \
     alias less="bat -p" && \
-    export BAT_THEME="Nord"
+    export BAT_THEME="gruvbox-dark"
 
 command -v batcat > /dev/null && \
     alias cat="batcat -p" && \
     alias less="batcat -p" && \
-    export BAT_THEME="Nord"
+    export BAT_THEME="gruvbox-dark"
 
 #--| top |--#
 command -v htop > /dev/null && \
