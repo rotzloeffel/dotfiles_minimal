@@ -13,6 +13,24 @@ function weather () {
     :
   }
 
+#--| transfer.sh |--#
+transfer() {
+  if [ $# -eq 0 ]; then
+    echo -e "No arguments specified. Usage:\necho transfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"
+    return 1
+  fi
+  tmpfile=$(mktemp -t transferXXX)
+  i
+  if tty -s; then
+    basefile=$(basename "$1" | sed -e 's/[^a-zA-Z0-9._-]/-/g')
+    curl --progress-bar --upload-file "$1" "https://transfer.sh/$basefile" >>$tmpfile
+  else
+    curl --progress-bar --upload-file "-" "https://transfer.sh/$1" >>$tmpfile
+  fi
+  /usr/bin/cat $tmpfile
+  rm -f $tmpfile
+}
+
 #--| copy "$file" to "$file.bak" |--#
 function bak() {
     cp -af -- "$1" "$1.bak";
@@ -101,7 +119,7 @@ if [ "$UID" != "0" ]
   then
      pid=$(ps -f -u $UID | sed 1d | fzf -m  --prompt="kill proc > " | awk '{print $2}')
   else
-     pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+     pid=$(ps -ef | sed 1d | fzf -m --prompt="kill proc > " | awk '{print $2}')
   fi
   if [ "x$pid" != "x" ]
     then
@@ -128,7 +146,7 @@ fzz() {
 #--| fzf edit files |--#
 function fze() {
   local files
-      IFS=$'\n' files=($(command fdfind . "$HOME/projects" '/etc' '/opt' '/boot' --type f --type l --hidden --follow --exclude .git | fzf -m --no-info --preview-window=:nohidden --prompt=" edit file > " --reverse))
+      IFS=$'\n' files=($(command fdfind . "$HOME" '/etc' '/opt' '/boot' --type f --type l --hidden --follow --exclude .git | fzf -m --no-info --preview-window=:nohidden --prompt=" edit file > " --reverse))
   [[ -n "$files" ]] && sudo -E ${EDITOR:-nvim} "${files[@]}"
 }
 

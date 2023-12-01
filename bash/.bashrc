@@ -29,6 +29,9 @@ set -o vi
 # disable ctrl-s ctrl-q in bash
 stty -ixon
 
+# tab complete for sudo commands
+complete -cf sudo
+
 #--| source files |--#
 
 # load aliases
@@ -138,7 +141,7 @@ export HISTIGNORE="pwd:vim:ca:cb:sb:cP:cs:ll:cd:v:l:x:ls:ls -ltr:ls -lAhF:cd ..:
 #--| shell options |--#
 
 # sets the control filter.
-export HISTCONTROL="ignoreboth"
+export HISTCONTROL="erasedups:ignoreboth"
 
 # append to the history file, don't overwrite it
 shopt -s histappend

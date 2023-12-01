@@ -10,27 +10,31 @@ set autoread                            " reload files changed outside vim
 set autowrite                           " auto-write the file based on some condition
 set backspace=indent,eol,start          " use backsapce to delete
 set confirm                             " ask for confirmation when handling unsaved or read-only files
+set display+=lastline                   " display as much as possible of the last line and terminate with '@@@'
 set hidden                              " needed to keep multiple buffers open
 set history=500                         " the number of command and search history to keep
 set laststatus=2                        " set height of status line
 set lazyredraw                          " only redraw when necessary.
 set linebreak                           " break line at predefined characters
-set noswapfile                          " disable creating swapfiles
 set novisualbell noerrorbells           " do not use visual and error bells
 set shortmess+=I                        " no intro message when starting vim
-set showcmd                             " show already typed keys when more are expected.
-set textwidth=80
+set noshowcmd                           " show already typed keys when more are expected.
 set timeoutlen=500                      " time in milliseconds to wait for a mapped sequence to complete,
 set ttyfast                             " faster redrawing.
-set updatetime=800                      " for cursorHold events
 set virtualedit=block                   " virtual edit is useful for visual block edit
 set wildmenu                            " extended autocompletion for commands
+set wildignorecase                      " ignore case when completing file names and directories
 set wildcharm=<TAB>                     " autocmpletion hotkey
-set nocursorline
-set nocursorcolumn
 set conceallevel=0                      " do not hide markdown
 set gdefault                            " add the g flag to search/replace by default
 set nowrap                              " don't wrap lines
+set viminfo+=n~/.vim/viminfo            " move .viminfo file to directory .vim
+set pastetoggle=<F11>
+
+" ---| security |--- "
+set cryptmethod=blowfish                " use the Blowfish cipher for file encryption
+set modeline                            " enable parsing of modelines (has security implications!)
+set secure                              " block unsafe commands in .vimrc and .exrc files in the current directory
 
 " ---| encoding |--- "
 set fileencoding=utf-8
@@ -40,7 +44,7 @@ set fileformats=unix,dos
 " ---| color and style |--- "
 syntax on                               " enable syntax highlighting.
 set background=dark                     " set terminal background for better readability
-colorscheme default                     " set colorscheme
+colorscheme gruvbox                     " set colorscheme
 set scrolloff=3                         " minimum lines to keep above and below cursor when scrolling
 set sidescrolloff=3                     " minimum lines to keep right and left from cursor when scrolling
 set synmaxcol=300                       " text after this column is not highlighted
@@ -48,6 +52,10 @@ set title                               " title: turn on (for tmux and terminal 
 
 " ---| display line numbers |--- "
 set number relativenumber               " show line number and relative line number
+
+" ---| cursorline |--- "
+set cursorline
+hi CursorLine cterm=NONE ctermbg=237
 
 " ---| searching criteria |--- "
 set ignorecase                          " ignore case in search patterns
@@ -60,7 +68,7 @@ set incsearch                           " show matches while typing pattern
 
 " ---| indent whitespace characters |--- "
 set list
-set listchars=tab:»\ ,trail:·,extends:>,precedes:<
+set listchars=tab:»\ ,trail:·,extends:>,precedes:<,nbsp:+
 
 " --- indentation --- "
 set tabstop=4                           " number of visual spaces per TAB
@@ -68,8 +76,9 @@ set softtabstop=4                       " number of spaces in tab when editing
 set shiftwidth=4                        " number of spaces to use for autoindent
 set expandtab                           " expand tab to spaces so that tabs are spaces
 set shiftround                          " align indent to next multiple value of shiftwidth. For its meaning,
-set autoindent                          " copy indent from previous line
-set smartindent                         " enable smart indent. It add additional indents when necessary"
+set autoindent                          " automatically indent new lines to match the previous line
+set copyindent                          " when autoindenting copy the structure of the previous line
+set smartindent                         " enable smart indent. It add additional indents when necessary
 set smarttab                            " when you hit tab at start of line, indent added according to shiftwidth value
 
 " ---| scrolling and mouse control |--- "
@@ -92,8 +101,17 @@ set clipboard+=unnamedplus
 set splitbelow                          " split window below when creating horizontal/vertical windows
 set splitright                          " split window right when creating horizontal/vertical windows
 
+" ---| swap files |--- "
+set noswapfile                          " disable creating swapfiles
+set directory^=~/.vim/swap//            " directories to try for reading/writing swap files
+set swapsync=                           " don't call [f]sync() after writing to a swap file (more power efficient)
+set updatetime=250                      " time after which nothing is typed to write the swap file (msec)
+
 " ---| backup |--- "
-set nobackup " disable backups files
+set nobackup                            " disable backups files
+set backupdir^=~/.vim/backup//          " directories to try for reading/writing backup files
+set backupskip=/tmp/*                   " list of file patterns to match for excluding backup creation
+set backupext=~                         " string to append to the original file name for backups
 set nowritebackup
 
 " ---| persistent undo | --- "
@@ -130,20 +148,23 @@ nnoremap <leader>bn :bnext<cr>
 " map "<leader> bp" previous buffer
 nnoremap <leader>bp :bprevious<cr>
 
-" map "<leader> t" new tab
-nnoremap <leader>t :tabnew<cr>
-
-" map "<leader> tn" next tab
-nnoremap <leader>tn :tabnext<cr>
-
-" map "<leader> tp" previous tab
-nnoremap <leader>tp :tabprev<cr>
-
 " map "<leader> v" split vertical
 nnoremap <leader>v :vsplit<cr>
 
 " map "<leader> h" split horizontal
 nnoremap <leader>h :split<cr>
+
+" Make `Y` behave like `C` and `D`
+nnoremap Y y$
+
+" Make 'U' perform a redo operation (a sensible inverse of 'u')
+nnoremap U <C-R>
+
+" Open/close current fold
+nnoremap zz za
+
+" `<CR>` in normal mode inserts a break at the cursor and enters insert mode
+nnoremap <CR> i<CR><Esc>I
 
 " removes search highlighting
 nnoremap <silent> <leader><leader> :nohl<CR><C-l>
@@ -153,6 +174,10 @@ nnoremap <silent> <leader><leader> :nohl<CR><C-l>
 nnoremap <S-Tab> <<
 " for insert mode
 inoremap <S-Tab> <C-d>
+
+" Bash / emacs keys for command line
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
 
 " easy Code Block Movement: move selection with > and <
 vnoremap < <gv
@@ -193,3 +218,5 @@ autocmd FileType yaml,yml setlocal ts=2 sts=2 sw=2 et ai
 
 " disable auto comment on new line
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+" ---| statusline |--- #

@@ -1,9 +1,9 @@
 FROM debian:latest
 RUN apt update && \
     apt dist-upgrade -y && \
-    apt install --no-install-recommends --no-install-suggests bat bsdextrautils zoxide openssh-client lsd vim tmux procps bash-completion fzf exa fd-find ripgrep sudo -y
+    apt install --no-install-recommends --no-install-suggests bat curl wget git ca-certificates bsdextrautils less zoxide man nmon htop openssh-client lsd vim tmux procps bash-completion fzf exa fd-find ripgrep sudo -y
 RUN rm -rf /root/.bashrc /root/.profile /root/.bash_history
-COPY vim/.vimrc /root/.vim/vimrc
+COPY vim/ /root/.vim
 COPY ssh/.ssh/config /root/.ssh/
 COPY tmux/.tmux.conf /root
 COPY bash/.bashrc /root

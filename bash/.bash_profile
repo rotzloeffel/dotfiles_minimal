@@ -16,6 +16,7 @@ fi
 export PAGER='less'
 export TTY=$(tty)
 export GPG_TTY="$(tty)"
+export TERM=xterm-256color
 
 #--| xdg |--#
 
@@ -31,7 +32,6 @@ export XDG_VIDEOS_DIR="${HOME}/videos"
 
 #--| less |--#
 
-#export LESS="-RFi"
 export LESS="-SXIFRs"
 export LESSHISTFILE="-"
 export LESS_TERMCAP_mb=$'\E[1;32m'
