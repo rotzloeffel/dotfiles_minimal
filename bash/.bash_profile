@@ -2,7 +2,7 @@
 
 #--| applications |--#
 
-if [[ "$(command -v nvim)" ]]; then
+if [[ "$(command -v vim)" ]]; then
   export VISUAL='vim'
   export EDITOR='vim'
 fi

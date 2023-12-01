@@ -99,7 +99,7 @@ function g() {
 function fzk() {
 if [ "$UID" != "0" ]
   then
-     pid=$(ps -f -u $UID | sed 1d | fzf -m  --prompt="kill proc ﮸ " | awk '{print $2}')
+     pid=$(ps -f -u $UID | sed 1d | fzf -m  --prompt="kill proc > " | awk '{print $2}')
   else
      pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
   fi
@@ -112,7 +112,7 @@ if [ "$UID" != "0" ]
 #--| fzf find pid |--#
 function fzp() {
   local pid
-  pid=$(ps auxw | sed 1d | fzf -m --prompt="find pid ﮸ " --preview-window=:hidden | awk '{print $2}')
+  pid=$(ps auxw | sed 1d | fzf -m --prompt="find pid > " --preview-window=:hidden | awk '{print $2}')
   if [ "x$pid" != "x" ]
   then
     echo "PID : $pid"
@@ -128,7 +128,7 @@ fzz() {
 #--| fzf edit files |--#
 function fze() {
   local files
-      IFS=$'\n' files=($(command fd . "$HOME/projects" '/etc' '/opt' '/boot' --type f --type l --hidden --follow --exclude .git | fzf -m --no-info --preview-window=:nohidden --prompt="  edit file ﮸ " --reverse))
+      IFS=$'\n' files=($(command fdfind . "$HOME/projects" '/etc' '/opt' '/boot' --type f --type l --hidden --follow --exclude .git | fzf -m --no-info --preview-window=:nohidden --prompt=" edit file > " --reverse))
   [[ -n "$files" ]] && sudo -E ${EDITOR:-nvim} "${files[@]}"
 }
 
@@ -165,8 +165,8 @@ function fza() {
         print bld cyn $1 rst blu "--" $2
       }' | \
     tr -d "'" | column -tl2 | \
-    fzf --prompt="show alias ﮸ " \
-        --preview 'echo {3..} | bat --color=always --plain --language=sh' \
+    fzf --prompt="show alias > " \
+        --preview 'echo {3..} | batcat --color=always --plain --language=sh' \
         --preview-window 'up:4:nohidden:wrap' | cut -d' ' -f 1)"
 }
 
@@ -174,16 +174,16 @@ function fza() {
 function fzl() {
   local files
   local FZF_DEFAULT_COMMAND="find -L -type f -exec readlink -f {} +;"
-  IFS=$'\n' files=($(command sudo fd . '/var/log' -tf -tl | fzf -m --no-info --preview-window=:hidden \
-      --prompt="show log ﮸ " --reverse))
-  [[ -n "$files" ]] && sudo -E bat -p "${files[@]}"
+  IFS=$'\n' files=($(command sudo fdfind . '/var/log' -tf -tl | fzf -m --no-info --preview-window=:hidden \
+      --prompt="show log > " --reverse))
+  [[ -n "$files" ]] && sudo -E batcat -p "${files[@]}"
   unset files
 }
 
 #--| fzf show var |--#
 function fzv() {
     local var
-    var=$(printenv | cut -d= -f1 | fzf --prompt="show var ﮸ " --preview-window=:hidden ) \
+    var=$(printenv | cut -d= -f1 | fzf --prompt="show var > " --preview-window=:hidden ) \
       && echo "$var=$(printenv "$var")" \
       && unset var
 }
@@ -194,12 +194,12 @@ function fzta() {
   if [ $1 ]; then
     tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
   fi
-  session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --prompt="tmux attach session ﮸ " --preview-window=:hidden --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
+  session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --prompt="tmux attach session > " --preview-window=:hidden --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
 }
 
 #--| fzf change projects dirs |--#
 fzproj() {
-    result=$(find ~/projects/* -type d -prune -exec basename {} ';' | sort | uniq | nl | fzf --preview-window=:hidden --prompt="jump to project ﮸ "| cut -f 2)
+    result=$(find ~/projects/* -type d -prune -exec basename {} ';' | sort | uniq | nl | fzf --preview-window=:hidden --prompt="jump to project > "| cut -f 2)
     [ -n "$result" ] && \cd ~/projects/$result
     unset result
 }
@@ -226,7 +226,7 @@ function fzman() (
         $MAN "$@"
         return $?
     else
-        $MAN -k . | fzf --reverse --prompt='show man page ﮸ ' --preview-window=:hidden --preview="echo {2} | sed 's/(.*//' | xargs $MAN -P cat" | awk '{print $1}' | sed 's/(.*//' | sed 's/,//'| xargs $MAN
+        $MAN -k . | fzf --reverse --prompt='show man page > ' --preview-window=:hidden --preview="echo {2} | sed 's/(.*//' | xargs $MAN -P cat" | awk '{print $1}' | sed 's/(.*//' | sed 's/,//'| xargs $MAN
         return $?
     fi
 )

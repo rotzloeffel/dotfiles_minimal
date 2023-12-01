@@ -30,7 +30,7 @@ export FZF_THEME_GRUVBOX_DARK="
 
 export FZF_PREVIEW_OPTS="--preview
 '([[ {} =~ ('.jpg'|'.jpeg'|'.png'|'.gif'|'.bmp'|'.svg'|'.mp4'|'.mkv')$ ]] && (chafa --center=on {} && exiftool {})) ||
-([[ -f {} ]] && (bat --style=header,numbers,changes,plain --color=always --language=sh --line-range :500 {} || cat {})) ||
+([[ -f {} ]] && (batcat --style=header,numbers,changes,plain --color=always --language=sh --line-range :500 {} || cat {})) ||
 ([[ -d {} ]] && (lsd  -all --long --tree --depth=5 --group-dirs=first -I=.git {} )) || echo {} 3>/dev/null | head -n 500'
 "
 
@@ -58,7 +58,7 @@ if [[ -d {} ]]; then
 elif [[ {} =~ ('.jpg'|'.jpeg'|'.png'|'.gif'|'.bmp'|'.svg'|'.mp4'|'.mkv')$ ]]; then
   chafa --center {} | less > /dev/tty
 else
-  bat --paging=always --style=plain --color=always --language=sh {} > /dev/tty
+  batcat --paging=always --style=plain --color=always --language=sh {} > /dev/tty
 fi)'
 --bind 'ctrl-a:select-all'
 --bind 'ctrl-alt-d:deselect-all'
@@ -69,10 +69,10 @@ fi)'
 --bind 'ctrl-v:execute(code {+})'
 --bind 'del:execute(rm -iv {};)+reload($FZF_DEFAULT_COMMAND)+clear-screen'
 "
-# --bind 'ctrl-/:execute(if [[ -f {} ]]; then bat --paging=always --style=\"header,numbers,changes\" --language=sh {}  < /dev/tty > /dev/tty 2>&1; else broot {} < /dev/tty > /dev/tty 2>&1
+# --bind 'ctrl-/:execute(if [[ -f {} ]]; then batcat --paging=always --style=\"header,numbers,changes\" --language=sh {}  < /dev/tty > /dev/tty 2>&1; else broot {} < /dev/tty > /dev/tty 2>&1
 # ; fi)'
 
-export FZF_DEFAULT_COMMAND="fd --color=always --hidden --exclude .git"
+export FZF_DEFAULT_COMMAND="fdfind --color=always --hidden --exclude .git"
 
 export FZF_DEFAULT_OPTS="
 "$FZF_PREVIEW_OPTS"
@@ -87,13 +87,13 @@ export FZF_DEFAULT_OPTS="
 --preview-window=:hidden
 "
 
-export FZF_ALT_C_COMMAND="fd --type=d --color=always --hidden --exclude .git"
+export FZF_ALT_C_COMMAND="fdfind --type=d --color=always --hidden --exclude .git"
 
 export FZF_ALT_C_OPTS="
 --preview 'lsd --all --long --tree --depth=3 {} | head -500'
 --preview-window 'nohidden,<50(down,75%,border-top)'
---bind 'alt-h:reload(fd --type=d --color=always --follow --exclude .git)'
---bind 'alt-c:reload(fd -p ~ --color=always --hidden --type=d --follow)'
+--bind 'alt-h:reload(fdfind --type=d --color=always --follow --exclude .git)'
+--bind 'alt-c:reload(fdfind -p ~ --color=always --hidden --type=d --follow)'
 "
 
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -107,12 +107,12 @@ export FZF_CTRL_T_OPTS="
 --header 'Alt-D: Directories | Alt-F: Files | Alt-H: Hide Files'
 --bind 'alt-d:change-prompt(  Directories > )+reload("$FZF_ALT_C_COMMAND")'
 --bind 'alt-f:change-prompt(  Files > )+reload("$FZF_DEFAULT_COMMAND")'
---bind 'alt-h:change-prompt(  Hide Files > )+reload(fd --type=f --color=always --follow)'
---bind 'ctrl-t:change-prompt(Home > )+reload(fd --base-directory ~ --color=always --hidden --exclude .git)'
+--bind 'alt-h:change-prompt(  Hide Files > )+reload(fdfind --type=f --color=always --follow)'
+--bind 'ctrl-t:change-prompt(Home > )+reload(fdfind --base-directory ~ --color=always --hidden --exclude .git)'
 "
 
 export FZF_CTRL_R_OPTS="
---preview 'echo {+} | bat --color=always --wrap never --language=sh --style=plain'
+--preview 'echo {+} | batcat --color=always --wrap never --language=sh --style=plain'
 --preview-window 'down:3:nohidden:wrap'"
 
 # export FZF_TMUX_OPTS='-p80% --color=border:blue'
@@ -121,8 +121,8 @@ export FZF_CTRL_R_OPTS="
 
 # fzf completion '**' doesn't preview files (idk if it is a bug)
 _fzf_compgen_path() {
-  fd --color=always --hidden --follow --exclude ".git" . "$1"
+  fdfind --color=always --hidden --follow --exclude ".git" . "$1"
 }
 _fzf_compgen_dir() {
-  fd --color=always --type d --hidden --follow --exclude ".git" . "$1"
+  fdfind --color=always --type d --hidden --follow --exclude ".git" . "$1"
 }

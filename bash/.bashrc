@@ -32,13 +32,13 @@ stty -ixon
 #--| source files |--#
 
 # load aliases
-if [ -f $bash_aliases ]; then
-    . $HOME/bash_aliases
+if [ -f $HOME/.bash_aliases ]; then
+    . $HOME/.bash_aliases
 fi
 
 # load functions
-if [ -f $HOME/bash_functions ]; then
-    . $HOME/bash_functions
+if [ -f $HOME/.bash_functions ]; then
+    . $HOME/.bash_functions
 fi
 
 # load fzfrc
@@ -53,9 +53,6 @@ fi
 
 # ssh sockets
 [ -d "$HOME/.ssh/sockets" ] || \mkdir -p $HOME/.ssh/sockets && \chmod 700 $HOME/.ssh/sockets
-
-# nano
-[ -d "$HOME/backup/nano" ] || \mkdir -p $HOME/backup/nano/
 
 #--| path |--#
 

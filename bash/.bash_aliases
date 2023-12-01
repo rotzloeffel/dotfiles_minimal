@@ -14,7 +14,6 @@ if [ "$OS" == "Debian GNU/Linux" ] || [ "$OS" == "Ubuntu" ]; then
     alias apt-file="sudo apt-file"
     alias dpkg-reconfigure="sudo dpkg-reconfigure"
     alias dpkg="sudo dpkg"
-    command -v fdfind > /dev/null && alias fd='fdfind'
 fi
 
 #--| verbosity |--#
@@ -122,7 +121,7 @@ alias lla='ls -al'
 alias l.='ls -d .* 2>/dev/null'
 alias lt='find . | sed -e "s/[^-][^\/]*\//  |/g" -e "s/|\([^ ]\)/|-\1/" '
 alias ltr='ls -altr'
-alias lsbl='cd > /dev/null ;fd --hidden --follow --type=l'
+alias lsbl='cd > /dev/null ;fdfind --hidden --follow --type=l'
 
 #--| exa |--#
 EXA_DIR_PREVIEW="exa \
@@ -186,6 +185,11 @@ command -v bat > /dev/null && \
     alias less="bat -p" && \
     export BAT_THEME="Nord"
 
+command -v batcat > /dev/null && \
+    alias cat="batcat -p" && \
+    alias less="batcat -p" && \
+    export BAT_THEME="Nord"
+
 #--| top |--#
 command -v htop > /dev/null && \
     alias top='htop'
@@ -200,7 +204,7 @@ command -v neomutt > /dev/null && \
 if [[ "$TTY" != /dev/ttyv[0-9]* ]]; then
     if [ -x "$(command -v rg)" ]; then
       export FZF_CTRL_T_COMMAND='rg --files --no-ignore --no-messages --follow --hidden --glob "!.git/*" '
-      export FZF_CTRL_T_OPTS="--preview-window=right --preview 'bat --style=numbers --color=always --line-range :100 {}'"
+      export FZF_CTRL_T_OPTS="--preview-window=right --preview 'batcat --style=numbers --color=always --line-range :100 {}'"
       export FZF_DEFAULT_COMMAND='rg --files --no-ignore --follow --hidden --glob "!.git/*" 2> /dev/null'
       export FZF_CTRL_R_OPTS="-e --preview-window=:hidden"
     fi
@@ -214,7 +218,7 @@ if [[ "$TTY" != /dev/ttyv[0-9]* ]]; then
         --multi
         --border
         --no-info
-        --preview '([[ -f {} ]] && (bat --style=numbers --color=always {} || cat {})) || ([[ -d {} ]] && (tree -C {} | less)) || echo {} 2> /dev/null | head -200'
+        --preview '([[ -f {} ]] && (batcat --style=numbers --color=always {} || cat {})) || ([[ -d {} ]] && (tree -C {} | less)) || echo {} 2> /dev/null | head -200'
         --prompt=' : ' --pointer='> ' --marker='* '
         --bind ',:toggle-preview'
         --bind 'ctrl-a:select-all'

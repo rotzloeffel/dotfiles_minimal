@@ -1,159 +1,195 @@
+" ---| compatibility |--- "
+set nocompatible                        " disable vi compatibility mode
+set mouse=a                             " enable mouse for all modes (e.g. with tmux)
+set mousefocus                          " window focus follows mouse
+set mousehide                           " hide mouse pointer when characters are typed
+
+" ---| general config |--- "
+filetype plugin indent on               " load plugins according to detected filetype.
+set autoread                            " reload files changed outside vim
+set autowrite                           " auto-write the file based on some condition
+set backspace=indent,eol,start          " use backsapce to delete
+set confirm                             " ask for confirmation when handling unsaved or read-only files
+set hidden                              " needed to keep multiple buffers open
+set history=500                         " the number of command and search history to keep
+set laststatus=2                        " set height of status line
+set lazyredraw                          " only redraw when necessary.
+set linebreak                           " break line at predefined characters
+set noswapfile                          " disable creating swapfiles
+set novisualbell noerrorbells           " do not use visual and error bells
+set shortmess+=I                        " no intro message when starting vim
+set showcmd                             " show already typed keys when more are expected.
+set textwidth=80
+set timeoutlen=500                      " time in milliseconds to wait for a mapped sequence to complete,
+set ttyfast                             " faster redrawing.
+set updatetime=800                      " for cursorHold events
+set virtualedit=block                   " virtual edit is useful for visual block edit
+set wildmenu                            " extended autocompletion for commands
+set wildcharm=<TAB>                     " autocmpletion hotkey
+set nocursorline
+set nocursorcolumn
+set conceallevel=0                      " do not hide markdown
+set gdefault                            " add the g flag to search/replace by default
+set nowrap                              " don't wrap lines
+
+" ---| encoding |--- "
+set fileencoding=utf-8
 set encoding=utf-8
-scriptencoding utf-8
+set fileformats=unix,dos
 
-" Activate matchit plugin
-runtime! macros/matchit.vim
+" ---| color and style |--- "
+syntax on                               " enable syntax highlighting.
+set background=dark                     " set terminal background for better readability
+colorscheme default                     " set colorscheme
+set scrolloff=3                         " minimum lines to keep above and below cursor when scrolling
+set sidescrolloff=3                     " minimum lines to keep right and left from cursor when scrolling
+set synmaxcol=300                       " text after this column is not highlighted
+set title                               " title: turn on (for tmux and terminal apps tab title)
 
-" Activate man page plugin
-runtime! ftplugin/man.vim
+" ---| display line numbers |--- "
+set number relativenumber               " show line number and relative line number
 
-" Use English as default
-language en_US.utf-8
+" ---| searching criteria |--- "
+set ignorecase                          " ignore case in search patterns
+set smartcase                           " override ignorecase if search pattern has capital letters
+set wildmode=longest,list               " list all matches
+set showmatch                           " highlight matching parentheses/brackets
+set matchpairs+=<:>                     " make < and > match as well
+set hlsearch                            " highlight search results
+set incsearch                           " show matches while typing pattern
 
-filetype plugin indent on
-syntax enable
+" ---| indent whitespace characters |--- "
+set list
+set listchars=tab:»\ ,trail:·,extends:>,precedes:<
 
-" Set height of status line
-set laststatus=2
+" --- indentation --- "
+set tabstop=4                           " number of visual spaces per TAB
+set softtabstop=4                       " number of spaces in tab when editing
+set shiftwidth=4                        " number of spaces to use for autoindent
+set expandtab                           " expand tab to spaces so that tabs are spaces
+set shiftround                          " align indent to next multiple value of shiftwidth. For its meaning,
+set autoindent                          " copy indent from previous line
+set smartindent                         " enable smart indent. It add additional indents when necessary"
+set smarttab                            " when you hit tab at start of line, indent added according to shiftwidth value
 
-" Changing fillchars for folding, so there is no garbage charactes
-set fillchars=fold:\ ,vert:\|
+" ---| scrolling and mouse control |--- "
+set scrolloff=10                        " keep at least x lines above/below cursor if possible
+set whichwrap+=<,>,[,],h,l              " <Left>, <Right>, h, and l wrap around line breaks
+set nostartofline                       " don't reset cursor to start of line when moving around
 
-" Split window below/right when creating horizontal/vertical windows
-set splitbelow splitright
+" ---| folding |--- "
+set nofoldenable                        " fold level: when starting, let all the folds be open
+set foldopen+=jump                      " when jumping to line, folds on the line should be opened
+set fillchars=fold:\ ,vert:\|           " changing fillchars for folding, so there is no garbage charactes
+set foldmethod=indent                   " fold based on indent
+set foldnestmax=3                       " deepest fold is 3 levels
 
-" Time in milliseconds to wait for a mapped sequence to complete,
-" see https://unix.stackexchange.com/q/36882/221410 for more info
-set timeoutlen=500
-
-" For CursorHold events
-set updatetime=800
-
-" Clipboard settings, always use clipboard for all delete, yank, change, put
-" operation, see https://stackoverflow.com/q/30691466/6064933
+" ---| clipboard |--- "
 set clipboard+=unnamed
 set clipboard+=unnamedplus
 
-" Disable creating swapfiles, see https://stackoverflow.com/q/821902/6064933
-set noswapfile
+" ---| splits |--- "
+set splitbelow                          " split window below when creating horizontal/vertical windows
+set splitright                          " split window right when creating horizontal/vertical windows
 
-" General tab settings
-set tabstop=4       " number of visual spaces per TAB
-set softtabstop=4   " number of spaces in tab when editing
-set shiftwidth=4    " number of spaces to use for autoindent
-set expandtab       " expand tab to spaces so that tabs are spaces
+" ---| backup |--- "
+set nobackup " disable backups files
+set nowritebackup
 
-" Set matching pairs of characters and highlight matching brackets
-set matchpairs+=<:>,「:」
-
-" Show line number and relative line number
-set number relativenumber
-
-" Ignore case in general, but become case-sensitive when uppercase is present
-set ignorecase smartcase
-
-" File encoding settings for vim
-set fileencoding=utf-8
-
-" Break line at predefined characters
-set linebreak
-
-" Character to show before the lines that have been soft-wrapped
-set showbreak=↪
-
-" List all items and start selecting matches in cmd completion
-set wildmode=list:full
-
-" Show current line where the cursor is
-set cursorline
-
-" Set a ruler at column 80, see https://stackoverflow.com/q/2447109/6064933
-" set colorcolumn=80
-
-" Minimum lines to keep above and below cursor when scrolling
-set scrolloff=3
-
-" Do show mode on command line 
-set showmode
-
-" Fileformats to use for new files
-set fileformats=unix,dos
-
-" The mode in which cursorline text can be concealed
-set concealcursor=nc
-
-" Ask for confirmation when handling unsaved or read-only files
-set confirm
-
-" Do not use visual and error bells
-set novisualbell noerrorbells
-
-" The level we start to fold
-set foldlevel=0
-
-" The number of command and search history to keep
-set history=500
-
-" Use list mode and customized listchars
-set list listchars=tab:▸\ ,extends:❯,precedes:❮,nbsp:+
-
-" Auto-write the file based on some condition
-set autowrite
-
-" Persistent undo even after you close a file and re-open it.
-" For vim, we need to set up an undodir so that $HOME is not cluttered with
-" undo files.
+" ---| persistent undo | --- "
 if !has('nvim')
-    if !isdirectory($HOME . '/.local/vim/undo')
-        call mkdir($HOME . '/.local/vim/undo', 'p', 0700)
+    if !isdirectory($HOME . '/.vim/undo')
+        call mkdir($HOME . '/.vim/undo', 'p', 0700)
     endif
-    set undodir=~/.local/vim/undo
+    set undodir=~/.vim/undo
 endif
 set undofile
 
-" Align indent to next multiple value of shiftwidth. For its meaning,
-" see http://vim.1045645.n5.nabble.com/shiftround-option-td5712100.html
-set shiftround
+" ---| colors |--- "
+highlight ColorColumn ctermbg=darkGrey " set highlighting for colorcolum
 
-" Virtual edit is useful for visual block edit
-set virtualedit=block
+" ---| keymappings |--- "
 
-" Correctly break multi-byte characters such as CJK,
-" see https://stackoverflow.com/q/32669814/6064933
-set formatoptions+=mM
+" leader key <Space>
+:noremap <Space> <Nop>
+let mapleader  = "\<Space>"
+let localleader= "\<Space>"
 
-" Tilde (~) is an operator, thus must be followed by motions like `e` or `w`.
-set tildeop
+" map "<leader> q" to quit vim
+nnoremap <leader>q :q<cr>
 
-" Do not add two spaces after a period when joining lines or formatting texts,
-" see https://stackoverflow.com/q/4760428/6064933
-set nojoinspaces
+" map "<leader> w" to save
+nnoremap <leader>w :w<cr>
 
-" Text after this column is not highlighted
-set synmaxcol=500
+" map "<leader> x" to close buffer
+nnoremap <leader>x :bd<cr>
 
-" Increment search
-set incsearch
-set hlsearch
+" map "<leader> bn" next buffer
+nnoremap <leader>bn :bnext<cr>
 
-set wildmenu
+" map "<leader> bp" previous buffer
+nnoremap <leader>bp :bprevious<cr>
 
-" Do not use corsorcolumn
-set nocursorcolumn
+" map "<leader> t" new tab
+nnoremap <leader>t :tabnew<cr>
 
-set backspace=indent,eol,start  " Use backsapce to delete
+" map "<leader> tn" next tab
+nnoremap <leader>tn :tabnext<cr>
 
-let mapleader = ' '
+" map "<leader> tp" previous tab
+nnoremap <leader>tp :tabprev<cr>
 
-" Do not load netrw by default since I do not use it, see
-" https://github.com/bling/dotvim/issues/4
-let g:loaded_netrwPlugin = 1
+" map "<leader> v" split vertical
+nnoremap <leader>v :vsplit<cr>
 
-" Do not load tohtml.vim
-let g:loaded_2html_plugin = 1
+" map "<leader> h" split horizontal
+nnoremap <leader>h :split<cr>
 
-set background=dark
+" removes search highlighting
+nnoremap <silent> <leader><leader> :nohl<CR><C-l>
 
-set showmode               " Show current mode in command-line.
-set showcmd                " Show already typed keys when more are expected.
-set display     =lastline  " Show as much as possible of the last line.
+" shiftTab DeIndents:
+" for command mode
+nnoremap <S-Tab> <<
+" for insert mode
+inoremap <S-Tab> <C-d>
+
+" easy Code Block Movement: move selection with > and <
+vnoremap < <gv
+vnoremap > >gv
+
+" o without insert: exit insert mode after creating a new line above or below the current line.
+nnoremap o o<esc>
+nnoremap O O<esc>
+
+" insert and remove comments in visual and normal mode
+vmap <leader>c :s/^/#/g<CR>:let @/ = ""<CR>
+map  <leader>c :s/^/#/g<CR>:let @/ = ""<CR>
+vmap <leader>rc :s/^#//g<CR>:let @/ = ""<CR>
+map  <leader>rc :s/^#//g<CR>:let @/ = ""<CR>
+
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+cmap w!! w !sudo tee > /dev/null %
+
+" disable the recording macro
+map q <Nop>
+
+" search mappings: These will make it so that going to the next one in a
+" search will center on the line it's found in.
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
+" jump to the last position when reopening a file
+if has('autocmd')
+  let s:last_position_disable_filetypes = ['gitcommit']
+  au BufReadPost * if index(s:last_position_disable_filetypes, &ft) < 0 && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"zz" | endif
+endif
+
+" reload .vimrc if changed
+autocmd! bufwritepost :source ~/.vimrc
+
+" set correct indentation for yaml files
+autocmd FileType yaml,yml setlocal ts=2 sts=2 sw=2 et ai
+
+" disable auto comment on new line
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
